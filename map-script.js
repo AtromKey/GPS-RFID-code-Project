@@ -46,7 +46,7 @@ async function getLandmarkDescription(lat, lon) {
     return "Location details not available.";
   }
 }
-
+console.log(Hello);
 // Add debounce for search input
 function debounce(func, delay) {
   let timer;
