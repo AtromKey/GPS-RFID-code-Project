@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Real-Time GPS Tracking with Mapbox</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <style>
+      #map {
+        height: 100vh;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <!-- Firebase SDK (Modular) -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        onValue,
+      } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
+
+      // Your Firebase config (replace this with your actual credentials)
+      const firebaseConfig = {
+        apiKey: "AIzaSyApzW90meePGlKNhi5UyiQWceKeUz6F4dw",
+        authDomain: "gps-rfid-tracker.firebaseapp.com",
+        databaseURL:
+          "https://gps-rfid-tracker-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "gps-rfid-tracker",
+        storageBucket: "gps-rfid-tracker.firebasestorage.app",
+        messagingSenderId: "909010484136",
+        appId: "1:909010484136:web:af85a7ba20eedd89993b9d",
+        measurementId: "G-B78LH6TNP1",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+
+      // Make the database object available globally
+      window.database = database;
+
+      // Example of listening to data from Firebase (You can change this reference)
+      const gpsRef = ref(database, "gps_tracking/latest");
+
+      onValue(gpsRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          console.log("GPS Data from Firebase:", data);
+        } else {
+          console.log("No GPS data found.");
+        }
+      });
+    </script>
+
+    <!-- Leaflet.js -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- External Scripts -->
+    <script src="map-script.js"></script>
+
+    <!-- Time Based Tracking (Ensure this is of type module) -->
+    <script type="module" src="gps-data.js"></script>
+
+    <!-- GPS activation timeframe -->
+    <script src="gps-activation.js"></script>
+  </body>
+</html>
